@@ -8,14 +8,13 @@ Step 2: Obtain 15-mer counts
 jellyfish count -m 15 -s 100M -t 10 -C ERR2848501.fastq -o mer_counts_ERR2848501.jf
 ````
 Step 3: Convert output file ( '.jf' ) file to text file
+
  ```bash
 jellyfish dump mer_counts_ERR2848501.jf > output_ERR2848501.txt
 ````
 
-Step 4: Calculate distance using fractiona common k-mer distance
-```math
-\frac{\sum_{\text{common } k\text{-mers}} \min(C_1(K_i), C_2(K_i))}{\min\left(\sum_{\text{all } k\text{-mers}} C_1(K_j), \sum_{\text{all } k\text{-mers}} C_2(K_j) \right)}
-```
+Step 4: Read the text file to count k-mers
+
 ```python
 import itertools
 def read_kmers_from_file(file_path):
@@ -31,7 +30,57 @@ def read_kmers_from_file(file_path):
                 kmer = line
                 kmers[kmer] = count
     return kmers
+```
+Instead of Step 3 and 4, we can read directly from the Jellyfish (.jf) file using the code below.
 
+```python
+
+import numpy as np
+import itertools
+import time
+import mmap
+import struct
+
+#Function to find the starting point
+def find_starting_point(binary_data):
+    # Decode the byte string to a regular string
+    string = binary_data.decode('utf-8',errors='ignore')
+    # Find the position of the '{' character
+    position = string.find('{')
+    # Extract the substring up to that position
+    result = string[:position]
+    start = int(result)+len(result)
+    return start
+
+
+
+def read_kmers_from_file(file_path):
+    """Read k-mers and their counts from a binary file."""
+    kmers = {}
+    
+    with open(file_path, "rb") as f1:
+        data1 = f1.read()
+        
+        starting_point = find_starting_point(data1)
+        num_kmers = (len(data1) - starting_point) // 8
+        
+        format_str = '4sI'  # 4 bytes for k-mer, 4 bytes for count (uint32)
+        struct_size = struct.calcsize(format_str)
+        
+        for i in range(num_kmers):
+            offset = starting_point + i * struct_size
+            kmer, count = struct.unpack_from(format_str, data1, offset)
+            kmers[tuple(kmer)] = count
+
+    return kmers
+```
+
+Step 4: Calculate distance using fractional common k-mer distance
+```math
+fractional common k-mer distance = \frac{\sum_{\text{common } k\text{-mers}} \min(C_1(K_i), C_2(K_i))}{\min\left(\sum_{\text{all } k\text{-mers}} C_1(K_j), \sum_{\text{all } k\text{-mers}} C_2(K_j) \right)}
+```
+
+```python
 def fractional_common_kmer_count(file1, file2):
     """Calculate the fractional common k-mer count between two files."""
     kmers1 = read_kmers_from_file(file1)
@@ -64,4 +113,3 @@ fractional_count = fractional_common_kmer_count(file1, file2)
 print(f"Fractional Common k-mer Count: {fractional_count}")
 print('With new intersection')
 ```
-
