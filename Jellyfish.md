@@ -1,5 +1,4 @@
-# Process sequence files using each package.
-## Jellyfish
+## Process sequence files using Jellyfish
  Step 1: Install Jellyfish
  ```bash
 pip install jellyfish
@@ -14,7 +13,9 @@ jellyfish dump mer_counts_ERR2848501.jf > output_ERR2848501.txt
 ````
 
 Step 4: Calculate distance using fractiona common k-mer distance
-
+```math
+\frac{\sum_{\text{common } k\text{-mers}} \min(C_1(K_i), C_2(K_i))}{\min\left(\sum_{\text{all } k\text{-mers}} C_1(K_j), \sum_{\text{all } k\text{-mers}} C_2(K_j) \right)}
+```
 ```python
 import itertools
 def read_kmers_from_file(file_path):
