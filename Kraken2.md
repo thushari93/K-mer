@@ -44,7 +44,7 @@ add_taxonomy_to_fasta(input_file, output_file, taxid)
 Step 4: Add 'fasta' file to the library
 
 ```bash
-kraken2-build --add-to-library library/input_modified.fasta --db .
+kraken2-build --add-to-library library/ERR2848501_modified.fasta --db .
 ```
 
 Step 5: Build database
