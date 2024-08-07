@@ -23,3 +23,4 @@ while IFS= read -r URL; do
     # Record the creation in the output file
     echo "${base_name}.sig created from ${URL}" >> "$output_file"
 done < "$input_file"
+# In cluster use :sbatch -N 4 -n 20 --partition=general --time=0-14:00 --mail-type=begin,end,fail --mail-user=jcevall1@asu.edu smash.sh 
