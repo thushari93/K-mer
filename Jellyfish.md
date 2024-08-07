@@ -77,7 +77,7 @@ def read_kmers_from_file(file_path):
 
 Step 4: Calculate distance using fractional common k-mer distance
 ```math
-fractional common k-mer distance = \frac{\sum_{\text{common } k\text{-mers}} \min(C_1(K_i), C_2(K_i))}{\min\left(\sum_{\text{all } k\text{-mers}} C_1(K_j), \sum_{\text{all } k\text{-mers}} C_2(K_j) \right)}
+distance = \frac{\sum_{\text{common } k\text{-mers}} \min(C_1(K_i), C_2(K_i))}{\min\left(\sum_{\text{all } k\text{-mers}} C_1(K_j), \sum_{\text{all } k\text{-mers}} C_2(K_j) \right)}
 ```
 
 ```python
