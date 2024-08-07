@@ -13,7 +13,7 @@ Step 3: Convert output file ( '.jf' ) file to text file
 jellyfish dump mer_counts_ERR2848501.jf > output_ERR2848501.txt
 ````
 
-Step 4: Read the text file to count k-mers
+Step 5: Read the text file to count k-mers
 
 ```python
 import itertools
