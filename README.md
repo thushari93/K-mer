@@ -1,9 +1,4 @@
 # Distance Calculation Using Kmer
-
-## Packages Installation and Requirement
-### Jellyfish
-### Kraken
-### Sourmash
 Plan: how to install and the required computational resources (i.e., memory, speed...)
 ### Tips for Different Packages
 Plan: create separate files for Jellyfish, Kraken2 and Sourmash and give general introduction of each package in README file.
